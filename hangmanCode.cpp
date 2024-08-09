@@ -72,7 +72,7 @@ pair<string, string> handleRandom(string mode, vector<int> &check) //Trả về 
 
 //---------------------------- GAMEPLAY FUNCTIONS ----------------------------
 // Init screen 
-void showInit() 
+int showInit() 
 {
     cout << "+------------------------------------------------+" << endl;
     cout << "|                                                |" << endl;
@@ -88,30 +88,10 @@ void showInit()
     cout << "|                                                |" << endl;
     cout << "|                 Enter game mode:               |" << endl;
     cout << "+------------------------------------------------+" << endl;
-    
-    bool next = false;
-    string s_mode = "";
-    while(!next) {
-        switch (mode)
-        {
-        case 1:
-            s_mode += "easy";
-            !next;
-            break;
-        case 2:
-            s_mode += "normal";
-            !next;
-            break;
-        case 3:
-            s_mode += "hard";
-            !next;
-            break;
-        case 4:
-            break;
-        default:
-            break;
-        }
-    }
+
+    int mode;
+    cin >> mode;    
+    return mode;
 }
 
 // Play game screen
@@ -174,7 +154,7 @@ void startGame() { // showUI() cũ
 
 
 // 1. Màn hình Init
-    showInit();
+    mode = showInit();
 
 // 2. Random từ
     string modeStr = mode == 1 ? "easy.txt" : mode == 2 ? "normal.txt" : "hard.txt";
@@ -183,7 +163,7 @@ void startGame() { // showUI() cũ
     hint = wordPair.first;
 
 // 3. Bắt đầu đoán từ
-    while(lives > 0 && !isWin) {
+    while(lives > 0 || !isWin) {
         showHangman(lives);
         printABC(guessedLetters); 
         showHiddenWord(word,guessedLetters);
