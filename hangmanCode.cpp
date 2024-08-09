@@ -6,6 +6,10 @@
 
 using namespace std;
 
+// Notes: chieu rong man hinh: 52
+
+//---------------------------- UTILITY FUNCTIONS -----------------------------
+// Check từ này đã đc đoán ra chưa
 bool inCheck(vector<int> check, int key) 
 {
     for(auto it: check) {
@@ -14,6 +18,30 @@ bool inCheck(vector<int> check, int key)
     return false;
 }
 
+// Check kí tự có trong từ cần tìm ko
+bool checkLetter(string word, char c) {
+    // Mai
+    //
+}
+
+// Check tất cả các ký tự đã đc đoán hết chưa
+bool allLettersGuessed(string word, vector<char> guessedLetters) {
+    for (char c : word) {
+        bool found = false;
+        for (char guessed : guessedLetters) {
+            if (c == guessed) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Random word
 pair<string, string> handleRandom(string mode, vector<int> &check) //Trả về lỗi <error, error> hoặc <hint, word>
 {
     fstream fs(mode);
@@ -42,24 +70,8 @@ pair<string, string> handleRandom(string mode, vector<int> &check) //Trả về 
     return word;
 }
 
-bool checkLetter(string word, char letter){}
-void printABC()
-{
-}
-
-void showHiddenWord() {}
-
-void showHangMan() {
-    //show score
-}
-
-void showWinLoose()
-{
-    // loose xong chuyển qua nhập tên
-}
-
-void showList() {}
-
+//---------------------------- GAMEPLAY FUNCTIONS ----------------------------
+// Init screen 
 void showInit() 
 {
     cout << "+------------------------------------------------+" << endl;
@@ -76,7 +88,7 @@ void showInit()
     cout << "|                                                |" << endl;
     cout << "|                 Enter game mode:               |" << endl;
     cout << "+------------------------------------------------+" << endl;
-    int mode;
+    
     bool next = false;
     string s_mode = "";
     while(!next) {
@@ -100,26 +112,117 @@ void showInit()
             break;
         }
     }
-    
-    //Gọi tiếp hàm vào game chính và chuyền s_mode;
 }
 
-void showUI()
-{
+// Play game screen
+void showHangman(int lives) {
+    cout << "+--------------------------------------------------+" << endl;
+    cout << "|                     " << (lives > 0 ? "HANG MAN" : "YOU LOSE") << "                     |" << endl;
+    cout << "+--------------------------------------------------+" << endl;
+    cout << "|                        " << (lives <= 6 ? "|" : " ") << "                         |" << endl;
+    cout << "|                        " << (lives <= 5 ? "0" : " ") << "                         |" << endl;
+    cout << "|                       " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                        |" << endl;
+    cout << "|                       " << (lives <= 1 ? "/" : " ") << " " << (lives <= 0 ? "\\" : " ") << "                        |" << endl;
+    cout << "|                   +----------+                   |" << endl;
+    cout << "|                   | Lives: "<< lives << " |                   |" << endl;
+    cout << "+--------------------------------------------------+" << endl;    
 }
 
-void startGame() 
-{
+void printABC(vector<char> &guessedLetters) {
+    // Mai
+    // show available letter
+}
+
+void showHiddenWord(string word, vector<char> guessedLetters) {
+    // Mai
+    // nhớ handle trường hợp từ có nhiều chữ cái giống nhau (aPPle, bANANA...)
+} 
+
+// WinLose + Get username
+void win() {
+    // My
+    // 2 options: về lại init screen / chơi tiếp
+}
+void lose() {
+    // My
+    // có nhập tên ko?
+    // gọi hàm ranking
+}
+
+void printRanking() {
+    // My
+    // show bxh (hàm showList() cũ)
+}
+
+//------------------------------ GAME LOOP -------------------------------------
+void startGame() { // showUI() cũ
+// 0. Variables
+    int mode; // chế độ chơi (1 dễ, 2 tb, 3 khó)
+
+    pair<string, string> wordPair; // random từ file 
+    string hint, word; // hint và từ cần đoán
+    vector<int> check; // lưu index của mấy từ đã random
+
+    char c; // chữ cái ng dùng nhập
+    vector<char> guessedLetters; // các chữ cái ng dùng nhập rồi
+
+    int lives = 7; // số mạng hiện tại
+    bool isWin = false; // thắng chưa? chưa =))
+
+    int highScore = 0; // điểm cao nhất
+    int score = 0; // điểm hiện tại
+
+
+// 1. Màn hình Init
+    showInit();
+
+// 2. Random từ
+    string modeStr = mode == 1 ? "easy.txt" : mode == 2 ? "normal.txt" : "hard.txt";
+    wordPair = handleRandom(modeStr, check);
+    word = wordPair.second;
+    hint = wordPair.first;
+
+// 3. Bắt đầu đoán từ
+    while(lives > 0 && !isWin) {
+        showHangman(lives);
+        printABC(guessedLetters); 
+        showHiddenWord(word,guessedLetters);
+
+        cout << "Enter a letter: ";
+        cin >> c;
+        c = toupper(c);
+
+        if(checkLetter) {
+            guessedLetters.push_back(c);
+        }
+        else {
+            lives--;
+        }
+
+        // hết lives -> LOSE
+        if(lives == 0) {
+            isWin = false;
+            break;
+        }
+        // đoán đúng hết -> WIN
+        if(allLettersGuessed) {
+            isWin = true;
+            break;
+        }
+    }
+
+// My
+// 4. Kết quả thắng thua + lấy tên ng chơi
+    if(isWin == true) {
+        win();
+    }
+    else {
+        lose();
+    }
 
 }
 
-int main()
-{
+int main() {
     startGame();
     return 0;
 }
-
-// handle random + init (Trân)
-// source + showHangMan (Huyên)
-// showABC + showHidden + checkLetter (Mai)
-// showWinLoose + showList + showUI + startGame (My)
