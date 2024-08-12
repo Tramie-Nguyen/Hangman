@@ -315,8 +315,7 @@ void startGame()
 
     // bảng cập nhật thuộc tính của các chữ cái
     unordered_map<char, bool> ABCMap =
-        {{'m', false}, {'n', false}, {'b', false}, {'v', false}, {'c', false}, {'x', false}, {'z', false}, {'l', false}, {'k', false}, {'j', false}, {'h', false}, {'g', false}, {'f', false}, {'d', false}, {'s', false}, {'a', false}, {'p', false}, {'o', false}, {'i', false}, {'u', false}, {'y', false}, {'t', false}, {'r', false}, {'e', false}, {'w', false}, {'q', false}};
-
+        {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
     // 1. Màn hình Init
     mode = showInit();
 
@@ -333,10 +332,12 @@ void startGame()
         while (lives > 0 || !isWin)
         {
             showHangman(lives);
-            printABC(ABCMap);
             showHiddenWord(word, ABCMap);
+            cout << endl
+                 << endl;
+            printABC(ABCMap);
 
-            cout << "Enter a letter: ";
+            cout << "\nEnter a letter: ";
             cin >> c;
             c = toupper(c);
 
