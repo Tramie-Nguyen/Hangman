@@ -43,7 +43,7 @@ bool allLettersGuessed(string word, unordered_map<char, bool> ABCMap)
 {
     for (char c : word)
     {
-        if (ABCMap[c] = false)
+        if (ABCMap[c] == false)
             return false;
     }
     return true;
