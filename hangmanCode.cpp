@@ -128,7 +128,7 @@ void printABC(unordered_map<char, bool> &ABCMap)
         if (!pair.second) // nếu chưa chọn
             cout << pair.first << " ";
         else
-            cout << "              ";
+            cout << "_ ";
 
         if (pair.first == 'P')
             cout << endl
@@ -139,8 +139,10 @@ void printABC(unordered_map<char, bool> &ABCMap)
     }
 }
 
-void showHiddenWord(string word, unordered_map<char, bool> &ABCMap)
+void showHiddenWord(string word, string hint, unordered_map<char, bool> &ABCMap)
 {
+    cout << "              " << "Hint: " << hint << endl;
+
     int length = word.length();
     int width = (50 - length * 1.5) / 2; // canh giữa
 
@@ -336,10 +338,10 @@ void startGame()
         word = wordPair.second;
         hint = wordPair.first;
         // 3. Bắt đầu đoán từ
-        while (lives > 0 || !isWin)
+        while (lives > 0 && !isWin)
         {
             showHangman(lives);
-            showHiddenWord(word, ABCMap);
+            showHiddenWord(word, hint, ABCMap);
             cout << endl
                  << endl;
             printABC(ABCMap);
