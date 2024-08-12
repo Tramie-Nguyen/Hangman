@@ -162,9 +162,9 @@ void showHiddenWord(string word, unordered_map<char, bool> &ABCMap)
 // WinLose + Get username
 bool checkInvalidName(string name)
 {
-    for (char l : name)
+    for (int i = 0; i < name.length(); i++)
     {
-        if (l != ' ' && !ispunct(l))
+        if (name[i] != ' ' && !ispunct(name[i]))
             return false;
     }
     return true;
@@ -178,11 +178,9 @@ void enterUserName(account &user)
         getline(cin, name);
     } while (checkInvalidName(name));
 
-    user.name = "";
-    for (char l : name)
-        user.name += isupper(l);
+    user.name = name;
 }
-void printRanking(vector<account> highscores)
+void printRanking(vector<account> highscores, account user)
 {
     cout << "+-----------------------------------------------+" << endl;
     cout << "|        ==============================         |" << endl;
@@ -191,10 +189,13 @@ void printRanking(vector<account> highscores)
     cout << "|                                               |" << endl;
     cout << "|         ACCOUNT'S NAME        SCORE           |" << endl;
 
-    int limit = min(5, (int)highscores.size());
+    int limit = min(5, int(highscores.size()));
     for (int i = 0; i < limit; i++)
         cout << "|      " << (i + 1) << ".     " << left << setw(10) << setfill(' ') << highscores[i].name << "          " << left << setw(3) << setfill(' ') << highscores[i].score << "           |" << endl;
     cout << "|                                               |" << endl;
+    cout << "+-----------------------------------------------+" << endl;
+    cout << "|          YOUR SCORE: " << left << setw(3) << setfill(' ') << user.score << "POINT                 |" << endl;
+    cout << "|                _END GAME_                     |" << endl;
     cout << "+-----------------------------------------------+" << endl;
 }
 void ranking(vector<account> &highscores, account user)
@@ -223,11 +224,6 @@ void getRankingList(account user)
     vector<account> highscores;
     account temp;
     ifstream fin("ranking.txt");
-    if (!fin)
-    {
-        cerr << "Error: Unable to open file!" << endl;
-        return;
-    }
 
     string data, line;
     while (getline(fin, data))
@@ -245,12 +241,14 @@ void getRankingList(account user)
 
     ofstream fout;
     fout.open("ranking.txt");
-    for (int i = 0; i < 5; i++)
+    int limit = min(5, int(highscores.size()));
+
+    for (int i = 0; i < limit; i++)
         fout << highscores[i].name << '/' << highscores[i].score << endl;
     fout.close();
-    printRanking(highscores);
+    printRanking(highscores, user);
 }
-bool win(account &user)
+bool win(account &user, string word)
 {
     char c;
     do
@@ -259,20 +257,22 @@ bool win(account &user)
         cout << "|    =======================================    |" << endl;
         cout << "|    *   YOU WIN! YOU'VE GUESS THE WORD !  *    |" << endl;
         cout << "|    =======================================    |" << endl;
-        cout << "|                 \\ | /                         |" << endl;
-        cout << "|    O            Yeah!                         |" << endl;
-        cout << "|   \\|/           / | \\                         |" << endl;
+        cout << "|                                               |" << endl;
+        cout << "|    O               HIDDEN WORD:               |" << endl;
+        cout << "|   \\|/                   " << left << setw(10) << setfill(' ') << word << "            |" << endl;
         cout << "|    |                                          |" << endl;
         cout << "|   / \\     Press enter to continue game...     |" << endl;
         cout << "|           Press 'X' to stop game...           |" << endl;
         cout << "+-----------------------------------------------+" << endl;
         cin.get(c);
+
     } while (c != '\n' && toupper(c) != 'X');
 
     if (c == '\n')
         return true;
     else
     {
+        cin.ignore();
         enterUserName(user);  // nhap ten
         getRankingList(user); // in top 5 account cao nhat
         return false;
@@ -287,7 +287,7 @@ void lose(account &user)
     cout << "|     _______                                   |" << endl;
     cout << "|    |       |                                  |" << endl;
     cout << "|    |       O      YOUR SCORE:                 |" << endl;
-    cout << "|    |      /|\\           " << user.score << " POINT               |" << endl;
+    cout << "|    |      /|\\           " << left << setw(3) << setfill(' ') << user.score << "POINT              |" << endl;
     cout << "|    |      / \\                                 |" << endl;
     cout << "| ___|                                          |" << endl;
     cout << "+-----------------------------------------------+" << endl;
@@ -295,7 +295,11 @@ void lose(account &user)
     enterUserName(user);  // nhap ten
     getRankingList(user); // in top 5 account cao nhat
 }
-
+void setUpABCMap(unordered_map<char, bool> &ABCMap)
+{
+    for (auto element : ABCMap)
+        element.second = false;
+}
 //------------------------------ GAME LOOP -------------------------------------
 void startGame()
 {
@@ -309,8 +313,8 @@ void startGame()
 
     char c; // chữ cái ng dùng nhập
 
-    int lives = 7;           // số mạng hiện tại
-    bool isWin = false;      // thắng chưa? chưa =))
+    int lives;               // số mạng hiện tại
+    bool isWin;              // thắng chưa? chưa =))
     bool keepPlaying = true; // chơi tiếp không
 
     // bảng cập nhật thuộc tính của các chữ cái
@@ -322,12 +326,15 @@ void startGame()
     // 2. Random từ
     string modeStr = mode == 1 ? "easy.txt" : mode == 2 ? "normal.txt"
                                                         : "hard.txt";
-    wordPair = handleRandom(modeStr, check);
-    word = wordPair.second;
-    hint = wordPair.first;
 
     while (keepPlaying)
     {
+        lives = 7;
+        isWin = false;
+        setUpABCMap(ABCMap);
+        wordPair = handleRandom(modeStr, check);
+        word = wordPair.second;
+        hint = wordPair.first;
         // 3. Bắt đầu đoán từ
         while (lives > 0 || !isWin)
         {
@@ -357,7 +364,7 @@ void startGame()
                 break;
             }
             // đoán đúng hết -> WIN
-            if (!allLettersGuessed(word, ABCMap))
+            if (allLettersGuessed(word, ABCMap))
             {
                 isWin = true;
                 break;
@@ -368,10 +375,26 @@ void startGame()
         // 4. Kết quả thắng thua + lấy tên ng chơi
         if (isWin == true)
         {
-            keepPlaying = win(user);
+            cin.ignore();
+            switch (mode)
+            {
+            case 1:
+                user.score += 10;
+                break;
+            case 2:
+                user.score += 15;
+                break;
+            case 3:
+                user.score += 20;
+                break;
+            default:
+                break;
+            }
+            keepPlaying = win(user, word);
         }
         else
         {
+            cin.ignore();
             lose(user);
             keepPlaying = false;
         }
