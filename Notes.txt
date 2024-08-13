@@ -1,5 +1,4 @@
 Tue 13/08 
-1. fix lại init = lôp
-2. tiêt lo dap an dung
+1. fix lại init = loop
+2. ko co mat chu cai khi doan sai
 3. high score
-4. them khung abc

@@ -81,6 +81,13 @@ pair<string, string> handleRandom(string mode, vector<int> &check) // Trả về
     return word;
 }
 
+// set up lai ABC map sau moi lan choi
+unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
+{
+    for (auto element : ABCMap)
+        element.second = false;
+    return ABCMap;
+}
 //---------------------------- GAMEPLAY FUNCTIONS ----------------------------
 // Init screen
 int showInit()
@@ -122,6 +129,7 @@ void showHangman(int lives)
 
 void printABC(unordered_map<char, bool> &ABCMap)
 {
+    setUpABCMap(ABCMap);
     cout << "              ";
     for (auto &pair : ABCMap)
     {
@@ -298,11 +306,7 @@ void lose(account &user, string word)
     enterUserName(user);  // nhap ten
     getRankingList(user); // in top 5 account cao nhat
 }
-void setUpABCMap(unordered_map<char, bool> &ABCMap)
-{
-    for (auto element : ABCMap)
-        element.second = false;
-}
+
 //------------------------------ GAME LOOP -------------------------------------
 void startGame()
 {
@@ -321,8 +325,7 @@ void startGame()
     bool keepPlaying = true; // chơi tiếp không
 
     // bảng cập nhật thuộc tính của các chữ cái
-    unordered_map<char, bool> ABCMap =
-        {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
+    
     // 1. Màn hình Init
     mode = showInit();
 
@@ -334,7 +337,8 @@ void startGame()
     {
         lives = 7;
         isWin = false;
-        setUpABCMap(ABCMap);
+        unordered_map<char, bool> ABCMap =
+        {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
         wordPair = handleRandom(modeStr, check);
         word = wordPair.second;
         hint = wordPair.first;
@@ -357,6 +361,7 @@ void startGame()
             }
             else
             {
+                ABCMap[c] = true;
                 lives--;
             }
 
