@@ -280,14 +280,15 @@ bool win(account &user, string word)
         return false;
     }
 }
-void lose(account &user)
+void lose(account &user, string word)
 {
     cout << "+-----------------------------------------------+" << endl;
     cout << "|    =======================================    |" << endl;
     cout << "|    *  GAME OVER! BETTER LUCK NEXT TIME   *    |" << endl;
     cout << "|    =======================================    |" << endl;
     cout << "|     _______                                   |" << endl;
-    cout << "|    |       |                                  |" << endl;
+    cout << "|    |       |      HIDDEN WORD:                |" << endl;
+    cout << "|    |       |             " << left << setw(21) << setfill(' ') << word << right << "|" << endl;
     cout << "|    |       O      YOUR SCORE:                 |" << endl;
     cout << "|    |      /|\\           " << left << setw(3) << setfill(' ') << user.score << "POINT              |" << endl;
     cout << "|    |      / \\                                 |" << endl;
@@ -326,7 +327,7 @@ void startGame()
     mode = showInit();
 
     // 2. Random từ
-    string modeStr = mode == 1 ? "easy.txt" : mode == 2 ? "normal.txt"
+    string modeStr = mode == 1 ? "easy.txt" : mode == 2 ? "medium.txt"
                                                         : "hard.txt";
 
     while (keepPlaying)
@@ -397,7 +398,7 @@ void startGame()
         else
         {
             cin.ignore();
-            lose(user);
+            lose(user,word);
             keepPlaying = false;
         }
     }
