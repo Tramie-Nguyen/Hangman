@@ -93,18 +93,16 @@ unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
 int showInit()
 {
     cout << "+------------------------------------------------+" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                 Enter game mode:               |" << endl;
+    cout << "|                               __              |" << endl;
+    cout << "|----------+       |_| /_\\ |\\ || _   |\\/| /_\\ |\\ |                  |" << endl;
+    cout << "|          |       | |/   \\| \\||__|  |   |/   \\| \\|                 |" << endl;
+    cout << "|          |                by: Be Ca Vang       |" << endl;
+    cout << "|          0                                     |" << endl;
+    cout << "|         /|\\              Enter game mode:      |" << endl;
+    cout << "|         / \\              1 -- Easy             |" << endl;
+    cout << "|                           2 -- Medium          |" << endl;
+    cout << "|----------+                3 -- Hard            |" << endl;
+    cout << "|          |                                     |" << endl;
     cout << "+------------------------------------------------+" << endl;
 
     int mode;
@@ -115,16 +113,16 @@ int showInit()
 // Play game screen
 void showHangman(int lives)
 {
-    cout << "+--------------------------------------------------+" << endl;
-    cout << "|                     " << (lives > 0 ? "HANG MAN" : "YOU LOSE") << "                     |" << endl;
-    cout << "+--------------------------------------------------+" << endl;
-    cout << "|                        " << (lives <= 6 ? "|" : " ") << "                         |" << endl;
-    cout << "|                        " << (lives <= 5 ? "0" : " ") << "                         |" << endl;
-    cout << "|                       " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                        |" << endl;
-    cout << "|                       " << (lives <= 1 ? "/" : " ") << " " << (lives <= 0 ? "\\" : " ") << "                        |" << endl;
-    cout << "|                   +----------+                   |" << endl;
-    cout << "|                   | Lives: " << lives << " |                   |" << endl;
-    cout << "+--------------------------------------------------+" << endl;
+    cout << "+------------------------------------------------+" << endl;
+    cout << "|                    " << (lives > 0 ? "HANG MAN" : "YOU LOSE") << "                    |" << endl;
+    cout << "+------------------------------------------------+" << endl;
+    cout << "|                       " << (lives <= 6 ? "|" : " ") << "                        |" << endl;
+    cout << "|                       " << (lives <= 5 ? "0" : " ") << "                        |" << endl;
+    cout << "|                      " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                       |" << endl;
+    cout << "|                      " << (lives <= 1 ? "/" : " ") << " " << (lives <= 0 ? "\\" : " ") << "                       |" << endl;
+    cout << "|                  +----------+                  |" << endl;
+    cout << "|                  | Lives: " << lives << " |                  |" << endl;
+    cout << "+------------------------------------------------+" << endl;
 }
 
 void printABC(unordered_map<char, bool> &ABCMap)
