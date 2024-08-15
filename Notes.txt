@@ -1,2 +1,4 @@
 Tue 13/08 
 1. fix lại init = loop
+
+chơi lại ván mới hidden word và bảng chữ cái bị nhảy

@@ -27,9 +27,15 @@ bool inCheck(vector<int> check, int key)
 }
 
 // Check kí tự có trong từ cần tìm ko
-bool checkLetter(string word, char c)
+bool checkLetter(unordered_map<char, bool> ABCMap, string word, char &c)
 {
     c = toupper(c);
+    if (ABCMap[c])
+    {
+        cout << c << " is already used!" << "\nEnter another letter: ";
+        cin >> c;
+        return checkLetter(ABCMap, word, c);
+    }
 
     for (char i : word)
         if (c == i)
@@ -92,21 +98,25 @@ unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
 // Init screen
 int showInit()
 {
-    cout << "+------------------------------------------------+" << endl;
-    cout << "|                               __              |" << endl;
-    cout << "|----------+       |_| /_\\ |\\ || _   |\\/| /_\\ |\\ |                  |" << endl;
-    cout << "|          |       | |/   \\| \\||__|  |   |/   \\| \\|                 |" << endl;
-    cout << "|          |                by: Be Ca Vang       |" << endl;
-    cout << "|          0                                     |" << endl;
-    cout << "|         /|\\              Enter game mode:      |" << endl;
-    cout << "|         / \\              1 -- Easy             |" << endl;
-    cout << "|                           2 -- Medium          |" << endl;
-    cout << "|----------+                3 -- Hard            |" << endl;
-    cout << "|          |                                     |" << endl;
-    cout << "+------------------------------------------------+" << endl;
+    cout << "+------------------------------------------------------------+" << endl;
+    cout << "|                               __                           |" << endl;
+    cout << "|----------+       |_| /_\\ |\\ || _   |\\/| /_\\ |\\ |           |" << endl;
+    cout << "|          |       | |/   \\| \\||__|  |  |/   \\| \\|           |" << endl;
+    cout << "|          |                                 by: Be Ca Vang  |" << endl;
+    cout << "|          0                                                 |" << endl;
+    cout << "|         /|\\              Enter game mode:                  |" << endl;
+    cout << "|         / \\               1 -- Easy                        |" << endl;
+    cout << "|                           2 -- Medium                      |" << endl;
+    cout << "|----------+                3 -- Hard                        |" << endl;
+    cout << "|          |                                                 |" << endl;
+    cout << "+------------------------------------------------------------+" << endl;
 
-    int mode;
-    cin >> mode;
+    int mode = -1;
+    do
+    {
+        cout << "Enter mode game >> ";
+        cin >> mode;
+    } while (mode != 1 && mode != 2 && mode != 3);
     return mode;
 }
 
@@ -323,7 +333,7 @@ void startGame()
     bool keepPlaying = true; // chơi tiếp không
 
     // bảng cập nhật thuộc tính của các chữ cái
-    
+
     // 1. Màn hình Init
     mode = showInit();
 
@@ -336,7 +346,7 @@ void startGame()
         lives = 7;
         isWin = false;
         unordered_map<char, bool> ABCMap =
-        {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
+            {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
         wordPair = handleRandom(modeStr, check);
         word = wordPair.second;
         hint = wordPair.first;
@@ -353,10 +363,8 @@ void startGame()
             cin >> c;
             c = toupper(c);
 
-            if (checkLetter(word, c))
-            {
+            if (checkLetter(ABCMap, word, c))
                 ABCMap[c] = true;
-            }
             else
             {
                 ABCMap[c] = true;
@@ -401,7 +409,7 @@ void startGame()
         else
         {
             cin.ignore();
-            lose(user,word);
+            lose(user, word);
             keepPlaying = false;
         }
     }
