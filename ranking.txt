@@ -1,5 +1,5 @@
+tran/45
 H\NH23-24(Nam 1)\NH23-24_HK3\CSC10004_DSA\Projects\Hangman\" ; if ($?) { g++ hangmanCode.cpp -o hangmanCode } ; if ($?) { .\hangmanCode }/20
+\test\Hangman\" && g++ hangmanCode.cpp -o hangmanCode && "d:\Code\test\Hangman\"hangmanCode/15
 huro/12
 lyly/10
-jas/0
-jason/0

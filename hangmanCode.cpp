@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <unordered_map>
 #include <iomanip>
+#include <windows.h>
+
 using namespace std;
 
 struct account
@@ -12,10 +14,18 @@ struct account
     string name;
     int score;
 };
-// Notes: chieu rong man hinh: 52
+// Notes: chieu rong man hinh: 50
 
 //---------------------------- UTILITY FUNCTIONS -----------------------------
 // Check từ này đã đc đoán ra chưa
+string center(const string &str, const int width) {
+    int len = str.length();
+    if (width <= len) return str;
+    int left_padding = (width - len) / 2;
+    int right_padding = width - len - left_padding;
+    return string(left_padding, ' ') + str + string(right_padding, ' ');
+}
+
 bool inCheck(vector<int> check, int key)
 {
     for (auto it : check)
@@ -24,29 +34,6 @@ bool inCheck(vector<int> check, int key)
             return true;
     }
     return false;
-}
-
-// Check kí tự có trong từ cần tìm ko
-bool checkLetter(string word, char c)
-{
-    c = toupper(c);
-
-    for (char i : word)
-        if (c == i)
-            return true;
-
-    return false;
-}
-
-// Check tất cả các ký tự đã đc đoán hết chưa
-bool allLettersGuessed(string word, unordered_map<char, bool> ABCMap)
-{
-    for (char c : word)
-    {
-        if (ABCMap[c] == false)
-            return false;
-    }
-    return true;
 }
 
 // Random word
@@ -81,31 +68,50 @@ pair<string, string> handleRandom(string mode, vector<int> &check) // Trả về
     return word;
 }
 
-// set up lai ABC map sau moi lan choi
-unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
+// Check kí tự có trong từ cần tìm ko
+bool checkLetter(string word, char c)
 {
-    for (auto element : ABCMap)
-        element.second = false;
-    return ABCMap;
+    c = toupper(c);
+
+    for (char i : word)
+        if (c == i)
+            return true;
+
+    return false;
 }
+
+// Check tất cả các ký tự đã đc đoán hết chưa
+bool allLettersGuessed(string word, unordered_map<char, bool> ABCMap)
+{
+    for (char c : word)
+    {
+        if (ABCMap[c] == false)
+            return false;
+    }
+    return true;
+}
+
+
+
+// set up lai ABC map sau moi lan choi
 //---------------------------- GAMEPLAY FUNCTIONS ----------------------------
 // Init screen
 int showInit()
 {
-    cout << "+------------------------------------------------+" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                                                |" << endl;
-    cout << "|                 Enter game mode:               |" << endl;
-    cout << "+------------------------------------------------+" << endl;
+    cout << "+--------------------------------------------------+" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|                                                  |" << endl;
+    cout << "|" << setw(50) << setfill(' ') << center("Enter mode: ", 50) << "|" << endl;
+    cout << "+--------------------------------------------------+" << endl;
 
     int mode;
     cin >> mode;
@@ -129,44 +135,50 @@ void showHangman(int lives)
 
 void printABC(unordered_map<char, bool> &ABCMap)
 {
-    setUpABCMap(ABCMap);
-    cout << "              ";
+    string temp = "";
     for (auto &pair : ABCMap)
     {
         if (!pair.second) // nếu chưa chọn
-            cout << pair.first << " ";
+            temp = temp + pair.first + " ";
         else
-            cout << "_ ";
+            temp += "_ ";
 
-        if (pair.first == 'P')
-            cout << endl
-                 << "               ";
-        if (pair.first == 'L')
-            cout << endl
-                 << "                 ";
+        if (pair.first == 'P') {
+            cout << setw(52) << setfill(' ') << center(temp, 52);
+            cout << endl;
+            temp = "";
+        }
+        if (pair.first == 'L') {
+            cout << setw(52) << setfill(' ') << center(temp, 52);
+            cout << endl;
+            temp = "";
+        }
     }
+
+    cout << setw(52) << setfill(' ') << center(temp, 52);
 }
+
+
 
 void showHiddenWord(string word, string hint, unordered_map<char, bool> &ABCMap)
 {
-    cout << "              " << "Hint: " << hint << endl;
+    cout << setw(52) << setfill(' ') << center("Hint: " + hint, 52) << endl;
 
-    int length = word.length();
-    int width = (50 - length * 1.5) / 2; // canh giữa
+    
 
-    cout << setw(width) << setfill(' ');
-
-    for (int i = 0; i < length; i++)
+    string hidden_word = "";
+    for (int i = 0; i < word.length(); i++)
         if (word[i] == ' ')
-            cout << "  ";
+            hidden_word += "  ";
         else
         {
             if (ABCMap[word[i]] == true)
-                cout
-                    << word[i] << " ";
+                hidden_word = hidden_word + word[i] + " ";
             else
-                cout << "_ ";
+                hidden_word += "_ ";
         }
+
+    cout << setw(52) << setfill(' ') << center(hidden_word, 52);
 }
 
 // WinLose + Get username
