@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <unordered_map>
 #include <iomanip>
-#include <windows.h>
-
 using namespace std;
 
 struct account
@@ -14,18 +12,19 @@ struct account
     string name;
     int score;
 };
-// Notes: chieu rong man hinh: 50
+// Notes: chieu rong man hinh: 52
 
 //---------------------------- UTILITY FUNCTIONS -----------------------------
-// Check từ này đã đc đoán ra chưa
-string center(const string &str, const int width) {
+string center(const string &str, const int width)
+{
     int len = str.length();
-    if (width <= len) return str;
+    if (width <= len)
+        return str;
     int left_padding = (width - len) / 2;
     int right_padding = width - len - left_padding;
     return string(left_padding, ' ') + str + string(right_padding, ' ');
 }
-
+// Check từ này đã đc đoán ra chưa
 bool inCheck(vector<int> check, int key)
 {
     for (auto it : check)
@@ -34,6 +33,35 @@ bool inCheck(vector<int> check, int key)
             return true;
     }
     return false;
+}
+
+// Check kí tự có trong từ cần tìm ko
+bool checkLetter(unordered_map<char, bool> ABCMap, string word, char &c)
+{
+    c = toupper(c);
+    if (ABCMap[c])
+    {
+        cout << c << " is already used!" << "\nEnter another letter: ";
+        cin >> c;
+        return checkLetter(ABCMap, word, c);
+    }
+
+    for (char i : word)
+        if (c == i)
+            return true;
+
+    return false;
+}
+
+// Check tất cả các ký tự đã đc đoán hết chưa
+bool allLettersGuessed(string word, unordered_map<char, bool> ABCMap)
+{
+    for (char c : word)
+    {
+        if (ABCMap[c] == false)
+            return false;
+    }
+    return true;
 }
 
 // Random word
@@ -68,69 +96,70 @@ pair<string, string> handleRandom(string mode, vector<int> &check) // Trả về
     return word;
 }
 
-// Check kí tự có trong từ cần tìm ko
-bool checkLetter(string word, char c)
-{
-    c = toupper(c);
-
-    for (char i : word)
-        if (c == i)
-            return true;
-
-    return false;
-}
-
-// Check tất cả các ký tự đã đc đoán hết chưa
-bool allLettersGuessed(string word, unordered_map<char, bool> ABCMap)
-{
-    for (char c : word)
-    {
-        if (ABCMap[c] == false)
-            return false;
-    }
-    return true;
-}
-
-
-
 // set up lai ABC map sau moi lan choi
+unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
+{
+    for (auto element : ABCMap)
+        element.second = false;
+    return ABCMap;
+}
 //---------------------------- GAMEPLAY FUNCTIONS ----------------------------
 // Init screen
 int showInit()
 {
-    cout << "+--------------------------------------------------+" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|                                                  |" << endl;
-    cout << "|" << setw(50) << setfill(' ') << center("Enter mode: ", 50) << "|" << endl;
-    cout << "+--------------------------------------------------+" << endl;
+    system("CLS");
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                       __ __   ____  ____    ____  ___ ___   ____  ____                        |" << endl;
+    cout << "|                      |  |  | /    ||    \\  /    ||   |   | /    ||    \\                       |" << endl;
+    cout << "|                      |  |  ||  o  ||  _  ||   __|| _   _ ||  o  ||  _  |                      |" << endl;
+    cout << "|                      |  _  ||     ||  |  ||  |  ||  \\_/  ||     ||  |  |                      |" << endl;
+    cout << "|                      |  |  ||  _  ||  |  ||  |_ ||   |   ||  _  ||  |  |                      |" << endl;
+    cout << "|                      |  |  ||  |  ||  |  ||     ||   |   ||  |  ||  |  |                      |" << endl;
+    cout << "|                      |__|__||__|__||__|__||___,_||___|___||__|__||__|__|                      |" << endl;
+    cout << "|                                                           by: Be Ca Vang                      |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|         _______                     || >> GAME MODE << ||                      _______        |" << endl;
+    cout << "|       |/      |                          <1> Easy <1>                         |      \\|       |" << endl;
+    cout << "|       |      (_)                        <2> Medium <2>                       (_)      |       |" << endl;
+    cout << "|       |      \\|/                         <3> Hard <3>                        /|\\      |       |" << endl;
+    cout << "|       |       |                                                               |       |       |" << endl;
+    cout << "|       |      / \\                                                             / \\      |       |" << endl;
+    cout << "|       |                       >> ENTER GAME MODE TO CONTINUE <<                       |       |" << endl;
+    cout << "|      _|___                                                                         ___|_      |" << endl;
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 
-    int mode;
-    cin >> mode;
+    int mode = -1;
+    do
+    {
+        cin >> mode;
+    } while (mode != 1 && mode != 2 && mode != 3);
     return mode;
 }
 
 // Play game screen
 void showHangman(int lives)
 {
-    cout << "+--------------------------------------------------+" << endl;
-    cout << "|                     " << (lives > 0 ? "HANG MAN" : "YOU LOSE") << "                     |" << endl;
-    cout << "+--------------------------------------------------+" << endl;
-    cout << "|                        " << (lives <= 6 ? "|" : " ") << "                         |" << endl;
-    cout << "|                        " << (lives <= 5 ? "0" : " ") << "                         |" << endl;
-    cout << "|                       " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                        |" << endl;
-    cout << "|                       " << (lives <= 1 ? "/" : " ") << " " << (lives <= 0 ? "\\" : " ") << "                        |" << endl;
-    cout << "|                   +----------+                   |" << endl;
-    cout << "|                   | Lives: " << lives << " |                   |" << endl;
-    cout << "+--------------------------------------------------+" << endl;
+    
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
+    cout << "|" << center((lives > 0 ? "HANG MAN" : "YOU LOSE"), 95) << "|" << endl;
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                               _________________                                               |" << endl;
+    cout << "|                             |/                " << (lives <= 6 ? "|" : " ") << "                                               |" << endl;
+    cout << "|                             |                " << (lives <= 5 ? "(_)" : "   ") << "                                              |" << endl;
+    cout << "|                             |                " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                                              |" << endl;
+    cout << "|                             |                " << (lives <= 1 ? "/ " : "  ") << (lives <= 0 ? "\\" : " ") << "                                              |" << endl;
+    cout << "|                             |                                                                 |" << endl;    
+    cout << "|                             |                                                                 |" << endl;   
+    cout << "|                             |           +----------+                                          |" << endl;
+    cout << "|                             |           | Lives: " << lives << " |                                          |" << endl;
+    cout << "+-----------------------------|-----------------------------------------------------------------+" << endl;
 }
 
 void printABC(unordered_map<char, bool> &ABCMap)
@@ -143,28 +172,26 @@ void printABC(unordered_map<char, bool> &ABCMap)
         else
             temp += "_ ";
 
-        if (pair.first == 'P') {
-            cout << setw(52) << setfill(' ') << center(temp, 52);
+        if (pair.first == 'P')
+        {
+            cout << "|" << center(temp, 95) << "|";
             cout << endl;
             temp = "";
         }
-        if (pair.first == 'L') {
-            cout << setw(52) << setfill(' ') << center(temp, 52);
+        if (pair.first == 'L')
+        {
+            cout << "|" << center(temp, 95) << "|";
             cout << endl;
             temp = "";
         }
     }
 
-    cout << setw(52) << setfill(' ') << center(temp, 52);
+    cout << "|" << center(temp, 95) << "|";
 }
-
-
 
 void showHiddenWord(string word, string hint, unordered_map<char, bool> &ABCMap)
 {
-    cout << setw(52) << setfill(' ') << center("Hint: " + hint, 52) << endl;
-
-    
+    cout << "|" << center("Hint: " + hint, 95) << "|" << endl;
 
     string hidden_word = "";
     for (int i = 0; i < word.length(); i++)
@@ -178,7 +205,7 @@ void showHiddenWord(string word, string hint, unordered_map<char, bool> &ABCMap)
                 hidden_word += "_ ";
         }
 
-    cout << setw(52) << setfill(' ') << center(hidden_word, 52);
+    cout << "|" << center(hidden_word, 95) << "|";
 }
 
 // WinLose + Get username
@@ -204,21 +231,29 @@ void enterUserName(account &user)
 }
 void printRanking(vector<account> highscores, account user)
 {
-    cout << "+-----------------------------------------------+" << endl;
-    cout << "|        ==============================         |" << endl;
-    cout << "|        |  TOP 5 HIGHSCORE ACCOUNTS  |         |" << endl;
-    cout << "|        ==============================         |" << endl;
-    cout << "|                                               |" << endl;
-    cout << "|         ACCOUNT'S NAME        SCORE           |" << endl;
-
-    int limit = min(5, int(highscores.size()));
+    system("CLS");
+    string score = ">> YOUR SCORE: " + to_string(user.score) + " POINTS <<";
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                        ==============================================                         |" << endl;
+    cout << "|                        |          TOP 5 HIGHSCORE ACCOUNTS          |                         |" << endl;
+    cout << "|                        ==============================================                         |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                ACCOUNT'S NAME                SCORE                            |" << endl;
+    cout << "|                                                                                               |" << endl;
+    int limit = min(6, int(highscores.size()));
     for (int i = 0; i < limit; i++)
-        cout << "|      " << (i + 1) << ".     " << left << setw(10) << setfill(' ') << highscores[i].name << "          " << left << setw(3) << setfill(' ') << highscores[i].score << "           |" << endl;
-    cout << "|                                               |" << endl;
-    cout << "+-----------------------------------------------+" << endl;
-    cout << "|          YOUR SCORE: " << left << setw(3) << setfill(' ') << user.score << "POINT                 |" << endl;
-    cout << "|                _END GAME_                     |" << endl;
-    cout << "+-----------------------------------------------+" << endl;
+        cout << "|                           " << (i + 1) << ".   " << left << setw(20) << setfill(' ') << highscores[i].name << "          " << left << setw(6) << setfill(' ') << highscores[i].score << "                           |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|" << center(score, 95) << "|" << endl;
+    cout << "|                                                                                               |" << endl;
+    cout << "|                                        ___END GAME___                                         |" << endl;
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 }
 void ranking(vector<account> &highscores, account user)
 {
@@ -263,18 +298,21 @@ void getRankingList(account user)
 
     ofstream fout;
     fout.open("ranking.txt");
-    int limit = min(5, int(highscores.size()));
+    int limit = min(6, int(highscores.size()));
 
     for (int i = 0; i < limit; i++)
         fout << highscores[i].name << '/' << highscores[i].score << endl;
     fout.close();
     printRanking(highscores, user);
 }
+
+
 bool win(account &user, string word)
 {
     char c;
     do
     {
+        system("CLS");
         cout << "+-----------------------------------------------+" << endl;
         cout << "|    =======================================    |" << endl;
         cout << "|    *   YOU WIN! YOU'VE GUESS THE WORD !  *    |" << endl;
@@ -302,6 +340,7 @@ bool win(account &user, string word)
 }
 void lose(account &user, string word)
 {
+    system("CLS");
     cout << "+-----------------------------------------------+" << endl;
     cout << "|    =======================================    |" << endl;
     cout << "|    *  GAME OVER! BETTER LUCK NEXT TIME   *    |" << endl;
@@ -337,7 +376,7 @@ void startGame()
     bool keepPlaying = true; // chơi tiếp không
 
     // bảng cập nhật thuộc tính của các chữ cái
-    
+
     // 1. Màn hình Init
     mode = showInit();
 
@@ -350,24 +389,29 @@ void startGame()
         lives = 7;
         isWin = false;
         unordered_map<char, bool> ABCMap =
-        {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
+            {{'M', false}, {'N', false}, {'B', false}, {'V', false}, {'C', false}, {'X', false}, {'Z', false}, {'L', false}, {'K', false}, {'J', false}, {'H', false}, {'G', false}, {'F', false}, {'D', false}, {'S', false}, {'A', false}, {'P', false}, {'O', false}, {'I', false}, {'U', false}, {'Y', false}, {'T', false}, {'R', false}, {'E', false}, {'W', false}, {'Q', false}};
         wordPair = handleRandom(modeStr, check);
         word = wordPair.second;
         hint = wordPair.first;
         // 3. Bắt đầu đoán từ
         while (lives > 0 && !isWin)
         {
+            system("CLS");
             showHangman(lives);
+            cout << "|                                                                                               |" << endl;
             showHiddenWord(word, hint, ABCMap);
-            cout << endl
-                 << endl;
+            cout << endl;
+            cout << "|                                                                                               |" << endl;
             printABC(ABCMap);
+            cout << endl;
+            cout << "|                                                                                               |" << endl;
+            cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 
             cout << "\nEnter a letter: ";
             cin >> c;
             c = toupper(c);
 
-            if (checkLetter(word, c))
+            if (checkLetter(ABCMap, word, c))
             {
                 ABCMap[c] = true;
             }
@@ -415,7 +459,7 @@ void startGame()
         else
         {
             cin.ignore();
-            lose(user,word);
+            lose(user, word);
             keepPlaying = false;
         }
     }
