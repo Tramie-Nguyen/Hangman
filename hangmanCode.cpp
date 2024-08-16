@@ -15,6 +15,15 @@ struct account
 // Notes: chieu rong man hinh: 52
 
 //---------------------------- UTILITY FUNCTIONS -----------------------------
+string center(const string &str, const int width)
+{
+    int len = str.length();
+    if (width <= len)
+        return str;
+    int left_padding = (width - len) / 2;
+    int right_padding = width - len - left_padding;
+    return string(left_padding, ' ') + str + string(right_padding, ' ');
+}
 // Check từ này đã đc đoán ra chưa
 bool inCheck(vector<int> check, int key)
 {
@@ -138,44 +147,48 @@ void showHangman(int lives)
 
 void printABC(unordered_map<char, bool> &ABCMap)
 {
-    setUpABCMap(ABCMap);
-    cout << "              ";
+    string temp = "";
     for (auto &pair : ABCMap)
     {
         if (!pair.second) // nếu chưa chọn
-            cout << pair.first << " ";
+            temp = temp + pair.first + " ";
         else
-            cout << "_ ";
+            temp += "_ ";
 
         if (pair.first == 'P')
-            cout << endl
-                 << "               ";
+        {
+            cout << setw(52) << setfill(' ') << center(temp, 52);
+            cout << endl;
+            temp = "";
+        }
         if (pair.first == 'L')
-            cout << endl
-                 << "                 ";
+        {
+            cout << setw(52) << setfill(' ') << center(temp, 52);
+            cout << endl;
+            temp = "";
+        }
     }
+
+    cout << setw(52) << setfill(' ') << center(temp, 52);
 }
 
 void showHiddenWord(string word, string hint, unordered_map<char, bool> &ABCMap)
 {
-    cout << "              " << "Hint: " << hint << endl;
+    cout << setw(52) << setfill(' ') << center("Hint: " + hint, 52) << endl;
 
-    int length = word.length();
-    int width = (50 - length * 1.5) / 2; // canh giữa
-
-    cout << setw(width) << setfill(' ');
-
-    for (int i = 0; i < length; i++)
+    string hidden_word = "";
+    for (int i = 0; i < word.length(); i++)
         if (word[i] == ' ')
-            cout << "  ";
+            hidden_word += "  ";
         else
         {
             if (ABCMap[word[i]] == true)
-                cout
-                    << word[i] << " ";
+                hidden_word = hidden_word + word[i] + " ";
             else
-                cout << "_ ";
+                hidden_word += "_ ";
         }
+
+    cout << setw(52) << setfill(' ') << center(hidden_word, 52);
 }
 
 // WinLose + Get username
@@ -356,8 +369,7 @@ void startGame()
         {
             showHangman(lives);
             showHiddenWord(word, hint, ABCMap);
-            cout << endl
-                 << endl;
+            cout << "\n\n";
             printABC(ABCMap);
 
             cout << "\nEnter a letter: ";
@@ -365,7 +377,9 @@ void startGame()
             c = toupper(c);
 
             if (checkLetter(ABCMap, word, c))
+            {
                 ABCMap[c] = true;
+            }
             else
             {
                 ABCMap[c] = true;
