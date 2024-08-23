@@ -143,7 +143,7 @@ int showInit()
             continue;
         mode = int(data[0]);
     } while (mode != 49 && mode != 50 && mode != 51);
-    return mode;
+    return mode - 48;
 }
 
 // Play game screen
@@ -374,7 +374,7 @@ void lose(account &user, string word)
     cout << "|                                                                                               |" << endl;
     cout << "|                               _______                                                         |" << endl;
     cout << "|                              |       |      HIDDEN WORD:                                      |" << endl;
-    cout << "|                              |       |             " << left << setw(45) << setfill(' ') << word << right << "|" << endl;
+    cout << "|                              |       |                " << left << setw(45) << setfill(' ') << word << right << "|" << endl;
     cout << "|                              |      (_)     YOUR SCORE:                                       |" << endl;
     cout << "|                              |      /|\\           " << left << setw(3) << setfill(' ') << user.score << "POINT                                    |" << endl;
     cout << "|                              |      / \\                                                       |" << endl;
