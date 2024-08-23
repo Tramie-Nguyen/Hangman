@@ -144,7 +144,7 @@ int showInit()
 // Play game screen
 void showHangman(int lives)
 {
-    
+
     cout << "+-----------------------------------------------------------------------------------------------+" << endl;
     cout << "|" << center((lives > 0 ? "HANG MAN" : "YOU LOSE"), 95) << "|" << endl;
     cout << "+-----------------------------------------------------------------------------------------------+" << endl;
@@ -155,8 +155,8 @@ void showHangman(int lives)
     cout << "|                             |                " << (lives <= 5 ? "(_)" : "   ") << "                                              |" << endl;
     cout << "|                             |                " << (lives <= 4 ? "/" : " ") << (lives <= 3 ? "|" : " ") << (lives <= 2 ? "\\" : " ") << "                                              |" << endl;
     cout << "|                             |                " << (lives <= 1 ? "/ " : "  ") << (lives <= 0 ? "\\" : " ") << "                                              |" << endl;
-    cout << "|                             |                                                                 |" << endl;    
-    cout << "|                             |                                                                 |" << endl;   
+    cout << "|                             |                                                                 |" << endl;
+    cout << "|                             |                                                                 |" << endl;
     cout << "|                             |           +----------+                                          |" << endl;
     cout << "|                             |           | Lives: " << lives << " |                                          |" << endl;
     cout << "+-----------------------------|-----------------------------------------------------------------+" << endl;
@@ -306,7 +306,6 @@ void getRankingList(account user)
     printRanking(highscores, user);
 }
 
-
 bool win(account &user, string word)
 {
     char c;
@@ -317,14 +316,14 @@ bool win(account &user, string word)
         cout << "|                                                                                               |" << endl;
         cout << "|                           =========================================                           |" << endl;
         cout << "|                           *    YOU WIN! YOU'VE GUESS THE WORD !   *                           |" << endl;
-        cout << "|                           =========================================                           |" << endl;     
+        cout << "|                           =========================================                           |" << endl;
         cout << "|                                                                                               |" << endl;
-        cout << "|                           (_) __                 HIDDEN WORD:                                 |" << endl;    
+        cout << "|                           (_) __                 HIDDEN WORD:                                 |" << endl;
         cout << "|                         __/|/                    " << left << setw(10) << setfill(' ') << word << "                                   |" << endl;
         cout << "|                            |                                                                  |" << endl;
         cout << "|                           / \\          Press enter to continue game...                        |" << endl;
-        cout << "|                                               Press 'X' to stop game...                       |" << endl;  
-        cout << "|                                                                                               |" << endl; 
+        cout << "|                                               Press 'X' to stop game...                       |" << endl;
+        cout << "|                                                                                               |" << endl;
         cout << "+-----------------------------------------------------------------------------------------------+" << endl;
         cin.get(c);
 
@@ -348,15 +347,15 @@ void lose(account &user, string word)
     cout << "|                                                                                               |" << endl;
     cout << "|                           =========================================                           |" << endl;
     cout << "|                           *    GAME OVER! BETTER LUCK NEXT TIME   *                           |" << endl;
-    cout << "|                           =========================================                           |" << endl;   
+    cout << "|                           =========================================                           |" << endl;
     cout << "|                               _______                                                         |" << endl;
-    cout << "|                              |       |      HIDDEN WORD:                                      |" << endl;                                     
-    cout << "|                              |       |             " << left << setw(21) << setfill(' ') << word << right  << "                      |" << endl;
-    cout << "|                              |       (_)    YOUR SCORE:                                       |" << endl;                                 
-    cout << "|                              |      /|\\           " << left << setw(3) << setfill(' ') << user.score  << "POINT                                    |" << endl;
-    cout << "|                              |      / \\                                                       |" << endl;                                    
-    cout << "|                           ___|                                                                |" << endl;                                  
-    cout << "+-----------------------------------------------------------------------------------------------+" << endl; 
+    cout << "|                              |       |      HIDDEN WORD:                                      |" << endl;
+    cout << "|                              |       |             " << left << setw(21) << setfill(' ') << word << right << "                      |" << endl;
+    cout << "|                              |      (_)     YOUR SCORE:                                       |" << endl;
+    cout << "|                              |      /|\\           " << left << setw(3) << setfill(' ') << user.score << "POINT                                    |" << endl;
+    cout << "|                              |      / \\                                                       |" << endl;
+    cout << "|                           ___|                                                                |" << endl;
+    cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 
     enterUserName(user);  // nhap ten
     getRankingList(user); // in top 5 account cao nhat
