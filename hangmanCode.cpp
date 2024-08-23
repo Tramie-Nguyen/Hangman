@@ -134,11 +134,15 @@ int showInit()
     cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 
     int mode = -1;
+    string data;
     do
     {
         cout << "Enter game mode: ";
-        cin >> mode;
-    } while (mode != 1 && mode != 2 && mode != 3);
+        getline(cin, data);
+        if (data.length() != 1)
+            continue;
+        mode = int(data[0]);
+    } while (mode != 49 && mode != 50 && mode != 51);
     return mode;
 }
 
