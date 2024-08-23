@@ -136,6 +136,7 @@ int showInit()
     int mode = -1;
     do
     {
+        cout << "Enter game mode: ";
         cin >> mode;
     } while (mode != 1 && mode != 2 && mode != 3);
     return mode;
