@@ -143,7 +143,7 @@ int showInit()
             continue;
         mode = int(data[0]);
     } while (mode != 49 && mode != 50 && mode != 51);
-    return mode - 48;
+    return mode;
 }
 
 // Play game screen
@@ -321,13 +321,16 @@ bool win(account &user, string word)
         system("CLS");
         cout << "+-----------------------------------------------------------------------------------------------+" << endl;
         cout << "|                                                                                               |" << endl;
+        cout << "|                        __ __   ___   __ __      __    __  ____  ____                          |" << endl;
+        cout << "|                       |  |  | /   \\ |  |  |    |  |__|  ||    ||    \\                         |" << endl;
+        cout << "|                       |  |  ||     ||  |  |    |  |  |  | |  | |  _  |                        |" << endl;
+        cout << "|                       |  ~  ||  O  ||  |  |    |  |  |  | |  | |  |  |                        |" << endl;
+        cout << "|                       |___, ||     ||  :  |    |  `  '  | |  | |  |  |                        |" << endl;
+        cout << "|                       |     ||     ||     |     \\      /  |  | |  |  |                        |" << endl;
+        cout << "|                       |____/  \\___/  \\__,_|      \\_/\\_/  |____||__|__|                        |" << endl;
         cout << "|                                                                                               |" << endl;
+        cout << "|                                 ||  You've get the word!!  ||                                 |" << endl;
         cout << "|                                                                                               |" << endl;
-        cout << "|                                                                                               |" << endl;
-        cout << "|                                                                                               |" << endl;
-        cout << "|                           =========================================                           |" << endl;
-        cout << "|                           *    YOU WIN! YOU'VE GUESS THE WORD !   *                           |" << endl;
-        cout << "|                           =========================================                           |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
@@ -336,9 +339,6 @@ bool win(account &user, string word)
         cout << "|                            |                                                                  |" << endl;
         cout << "|                           / \\          Press enter to continue game...                        |" << endl;
         cout << "|                                               Press 'X' to stop game...                       |" << endl;
-        cout << "|                                                                                               |" << endl;
-        cout << "|                                                                                               |" << endl;
-        cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
@@ -364,24 +364,24 @@ void lose(account &user, string word)
     cout << "+-----------------------------------------------------------------------------------------------+" << endl;
     cout << "|                                                                                               |" << endl;
     cout << "|                                                                                               |" << endl;
+    cout << "|                 ____   ____  ___ ___    ___       ___   __  __    ____  ____                  |" << endl;
+    cout << "|                /    | /    ||   |   |  /  _]     /   \\ |  ||  |  /  __||    \\                 |" << endl;
+    cout << "|               |   __||  o  || _   _ | /  [_     |     ||  ||  | /  [_  |  D  )                |" << endl;
+    cout << "|               |  |  ||     ||  \\_/ ||    _]     |  O  ||  ||  ||    _] |    /                 | " << endl;
+    cout << "|               |  |_ ||  _  ||   |   ||   [_     |     ||   :  ||   [__ |    \\                 |" << endl;
+    cout << "|               |     ||  |  ||   |   ||     |    |     | \\    / |      ||  .  \\                |" << endl;
+    cout << "|               |___,_||__|__||___|___||_____|     \\___/   \\__/  |______||__|\\_|                |" << endl;
     cout << "|                                                                                               |" << endl;
-    cout << "|                                                                                               |" << endl;
-    cout << "|                           =========================================                           |" << endl;
-    cout << "|                           *    GAME OVER! BETTER LUCK NEXT TIME   *                           |" << endl;
-    cout << "|                           =========================================                           |" << endl;
-    cout << "|                                                                                               |" << endl;
-    cout << "|                                                                                               |" << endl;
+    cout << "|                              ||     Better luck next time!    ||                              |" << endl;
     cout << "|                                                                                               |" << endl;
     cout << "|                               _______                                                         |" << endl;
     cout << "|                              |       |      HIDDEN WORD:                                      |" << endl;
-    cout << "|                              |       |                " << left << setw(45) << setfill(' ') << word << right << "|" << endl;
+    cout << "|                              |       |             " << left << setw(43) << setfill(' ') << word << right << "|" << endl;
     cout << "|                              |      (_)     YOUR SCORE:                                       |" << endl;
     cout << "|                              |      /|\\           " << left << setw(3) << setfill(' ') << user.score << "POINT                                    |" << endl;
     cout << "|                              |      / \\                                                       |" << endl;
     cout << "|                              |                                                                |" << endl;
     cout << "|                           ___|                                                                |" << endl;
-    cout << "|                                                                                               |" << endl;
-    cout << "|                                                                                               |" << endl;
     cout << "|                                                                                               |" << endl;
     cout << "|                                                                                               |" << endl;
     cout << "|                                                                                               |" << endl;
