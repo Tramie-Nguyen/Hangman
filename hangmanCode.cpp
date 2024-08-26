@@ -38,11 +38,11 @@ bool inCheck(vector<int> check, int key)
 // Check kí tự có trong từ cần tìm ko
 bool checkLetter(unordered_map<char, bool> ABCMap, string word, char &c)
 {
-    if(c >= 'A' && c <= 'z') {
+    if (c >= 'A' && c <= 'z')
+    {
         c = toupper(c);
         if (ABCMap[c])
-        { 
-            // for(int i = 0; i < 5; i++) cout << '\b';
+        {
             cout << c << " is already used!" << "\nEnter another letter: ";
             cin >> c;
             return checkLetter(ABCMap, word, c);
@@ -54,6 +54,7 @@ bool checkLetter(unordered_map<char, bool> ABCMap, string word, char &c)
 
         return false;
     }
+    return false;
 }
 
 // Check tất cả các ký tự đã đc đoán hết chưa
@@ -341,7 +342,7 @@ bool win(account &user, string word)
         cout << "|                         __/|/                    " << left << setw(45) << setfill(' ') << word << "|" << endl;
         cout << "|                            |                                                                  |" << endl;
         cout << "|                           / \\          Press enter to continue game...                        |" << endl;
-        cout << "|                                               Press 'X' to stop game...                       |" << endl;
+        cout << "|                                              Press 'X' to stop game...                        |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
         cout << "|                                                                                               |" << endl;
@@ -447,34 +448,30 @@ void startGame()
             cin >> c;
             c = toupper(c);
 
-            if(c >= 'A' && c <= 'z') {
+            if (c >= 'A' && c <= 'z')
+            {
                 if (checkLetter(ABCMap, word, c))
-                    {
-                        ABCMap[c] = true;
-                        cout << "Correct\n";
-                    }
-                    else
-                    {
-                        ABCMap[c] = true;
-                        cout << "Incorrect\n";
-                        lives--;
-                    }
+                    ABCMap[c] = true;
+                else
+                {
+                    ABCMap[c] = true;
+                    lives--;
+                }
 
-                    // hết lives -> LOSE
-                    if (lives == 0)
-                    {
-                        isWin = false;
-                        break;
-                    }
-                    // đoán đúng hết -> WIN
-                    if (allLettersGuessed(word, ABCMap))
-                    {
-                        isWin = true;
-                        break;
-                    }
-                }   
-                    
-            }   
+                // hết lives -> LOSE
+                if (lives == 0)
+                {
+                    isWin = false;
+                    break;
+                }
+                // đoán đúng hết -> WIN
+                if (allLettersGuessed(word, ABCMap))
+                {
+                    isWin = true;
+                    break;
+                }
+            }
+        }
 
         // My
         // 4. Kết quả thắng thua + lấy tên ng chơi
