@@ -100,13 +100,6 @@ pair<string, string> handleRandom(string mode, vector<int> &check) // Trả về
     return word;
 }
 
-// set up lai ABC map sau moi lan choi
-unordered_map<char, bool> setUpABCMap(unordered_map<char, bool> ABCMap)
-{
-    for (auto element : ABCMap)
-        element.second = false;
-    return ABCMap;
-}
 //---------------------------- GAMEPLAY FUNCTIONS ----------------------------
 // Init screen
 int showInit()
