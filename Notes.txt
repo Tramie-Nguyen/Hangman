@@ -1,4 +1,0 @@
-Tue 13/08 
-1. fix lại init = loop
-2. ko co mat chu cai khi doan sai
-3. high score
