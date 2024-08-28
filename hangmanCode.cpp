@@ -38,22 +38,18 @@ bool inCheck(vector<int> check, int key)
 // Check kí tự có trong từ cần tìm ko
 bool checkLetter(unordered_map<char, bool> ABCMap, string word, char &c)
 {
-    if (c >= 'A' && c <= 'z')
+    c = toupper(c);
+    if (ABCMap[c])
     {
-        c = toupper(c);
-        if (ABCMap[c])
-        {
-            cout << c << " is already used!" << "\nEnter another letter: ";
-            cin >> c;
-            return checkLetter(ABCMap, word, c);
-        }
-
-        for (char i : word)
-            if (c == i)
-                return true;
-
-        return false;
+        cout << c << " is already used!" << "\nEnter another letter: ";
+        cin >> c;
+        return checkLetter(ABCMap, word, c);
     }
+
+    for (char i : word)
+        if (c == i)
+            return true;
+
     return false;
 }
 
@@ -246,7 +242,7 @@ void printRanking(vector<account> highscores, account user)
     cout << "|                                                                                               |" << endl;
     cout << "|                                ACCOUNT'S NAME                SCORE                            |" << endl;
     cout << "|                                                                                               |" << endl;
-    int limit = min(6, int(highscores.size()));
+    int limit = min(5, int(highscores.size()));
     for (int i = 0; i < limit; i++)
         cout << "|                           " << (i + 1) << ".   " << left << setw(20) << setfill(' ') << highscores[i].name << "          " << left << setw(6) << setfill(' ') << highscores[i].score << "                           |" << endl;
     cout << "|                                                                                               |" << endl;
@@ -258,6 +254,32 @@ void printRanking(vector<account> highscores, account user)
     cout << "|                                        ___END GAME___                                         |" << endl;
     cout << "+-----------------------------------------------------------------------------------------------+" << endl;
 }
+int partition(vector<account> &highscores, int start, int end)
+{
+    int pivot = highscores[end].score;
+    int i = start - 1;
+
+    for (int j = start; j < end; j++)
+    {
+        if (highscores[j].score > pivot)
+        {
+            i++;
+            swap(highscores[i], highscores[j]);
+        }
+    }
+    swap(highscores[i + 1], highscores[end]);
+    return i + 1;
+}
+void quickSort(vector<account> &highscores, int start, int end)
+{
+    if (start < end)
+    {
+        int mid = partition(highscores, start, end);
+
+        quickSort(highscores, start, mid - 1);
+        quickSort(highscores, mid + 1, end);
+    }
+}
 
 void ranking(vector<account> &highscores, account user)
 {
@@ -265,19 +287,7 @@ void ranking(vector<account> &highscores, account user)
     int sizeOfVector = highscores.size();
     if (sizeOfVector == 1)
         return;
-    else
-    {
-        for (int i = 0; i < sizeOfVector - 1; i++)
-        {
-            int index = i;
-            for (int a = i + 1; a < sizeOfVector; a++)
-            {
-                if (highscores[a].score > highscores[index].score)
-                    index = a;
-            }
-            swap(highscores[index], highscores[i]);
-        }
-    }
+    quickSort(highscores, 0, sizeOfVector - 1);
 }
 
 void getRankingList(account user)
@@ -302,11 +312,13 @@ void getRankingList(account user)
 
     ofstream fout;
     fout.open("ranking.txt");
-    int limit = min(6, int(highscores.size()));
 
+    int limit = min(5, int(highscores.size()));
     for (int i = 0; i < limit; i++)
         fout << highscores[i].name << '/' << highscores[i].score << endl;
+
     fout.close();
+
     printRanking(highscores, user);
 }
 
